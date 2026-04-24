@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #f5f2ee;
+            --surface: #ffffff;
+            --border: #e0dbd3;
+            --accent: #2d6a4f;
+            --accent-light: #52b788;
+            --text: #1a1a1a;
+            --muted: #888;
+            --danger: #c0392b;
+            --radius: 14px;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        header h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: -1px;
+        }
+
+        header p {
+            color: var(--muted);
+            margin-top: 8px;
+            font-size: 0.95rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            margin-bottom: 28px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        }
+
+        .card h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.2rem;
+            color: var(--text);
+            margin-bottom: 24px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            background: #faf9f7;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+
+        input:focus { border-color: var(--accent-light); }
+
+        .btn {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .btn:active { transform: scale(0.97); }
+        .btn:hover { opacity: 0.85; }
+
+        .btn-green { background: var(--accent); color: #fff; }
+
+        .btn-edit {
+            background: #f0f7f4;
+            color: var(--accent);
+            border: 1px solid #c3e0d5;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-delete {
+            background: transparent;
+            color: var(--danger);
+            border: 1px solid #f0c0bb;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+
+        thead tr { border-bottom: 2px solid var(--border); }
+
+        th {
+            text-align: left;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            padding: 0 16px 14px 16px;
+        }
+
+        td {
+            padding: 15px 16px;
+            font-size: 0.95rem;
+            border-bottom: 1px solid #f0ede8;
+        }
+
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover td { background: #faf9f7; }
+
+        .actions { display: flex; gap: 8px; align-items: center; }
+
+        .badge {
+            font-weight: 500;
+            color: var(--accent);
+        }
+
+        .empty {
+            text-align: center;
+            color: var(--muted);
+            padding: 48px 0;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 640px) {
+            .form-row { grid-template-columns: 1fr; }
+            header h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <header>
+        <h1>Product Manager</h1>
+        <p>Keep track of all your products in one place</p>
+    </header>
+
+    <!-- Add Product Form -->
+    <div class="card">
+        <h2>➕ Add New Product</h2>
+        <form action="/add" method="POST">
+            <div class="form-row">
+                <div class="field">
+                    <label>Product Name</label>
+                    <input type="text" name="name" placeholder="e.g. Wireless Headphones" required>
+                </div>
+                <div class="field">
+                    <label>Price (₹)</label>
+                    <input type="number" name="amount" placeholder="e.g. 1999" required>
+                </div>
+                <button type="submit" class="btn btn-green">Add</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Products Table -->
+    <div class="card">
+        <h2>📦 All Products</h2>
+        <% if (accounts.length === 0) { %>
+            <p class="empty">No products yet. Add one above!</p>
+        <% } else { %>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr.</th>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% accounts.forEach((account, id) => { %>
+                <tr>
+                    <td><%= id + 1 %></td>
+                    <td><%= account.name %></td>
+                    <td class="badge">₹<%= Number(account.amount).toLocaleString('en-IN') %></td>
+                    <td>
+                        <div class="actions">
+                            <a href="/edit/<%= id %>" class="btn btn-edit">Edit</a>
+                            <form action="/delete/<%= id %>" method="POST">
+                                <button type="submit" class="btn btn-delete">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <% } %>
+    </div>
+
+</div>
+</body>
+</html>

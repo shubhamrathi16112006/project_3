@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #f5f2ee;
+            --surface: #ffffff;
+            --border: #e0dbd3;
+            --accent: #2d6a4f;
+            --accent-light: #52b788;
+            --text: #1a1a1a;
+            --muted: #888;
+            --radius: 14px;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 40px;
+            width: 100%;
+            max-width: 460px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+        }
+
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.9rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 0.88rem;
+            margin-bottom: 32px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 18px;
+        }
+
+        label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            background: #faf9f7;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 11px 14px;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+
+        input:focus { border-color: var(--accent-light); }
+
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:hover { opacity: 0.85; }
+        .btn-green { background: var(--accent); color: #fff; }
+        .btn-cancel { background: #f0ede8; color: var(--muted); border: 1px solid var(--border); }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>Edit Product</h1>
+    <p class="subtitle">Update the product details and save.</p>
+
+    <form action="/edit/<%= id %>" method="POST">
+        <div class="field">
+            <label>Product Name</label>
+            <input type="text" name="name" value="<%= account.name %>" required>
+        </div>
+        <div class="field">
+            <label>Price (₹)</label>
+            <input type="number" name="amount" value="<%= account.amount %>" required>
+        </div>
+        <div class="btn-row">
+            <a href="/" class="btn btn-cancel">Cancel</a>
+            <button type="submit" class="btn btn-green">Save Changes</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
